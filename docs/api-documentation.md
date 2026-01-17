@@ -373,4 +373,4 @@ data = response.json()
 For API support, contact: support@portfoliogenerator.com
 
 <!-- 
-lucky -->
+lucky  ray-->
