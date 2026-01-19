@@ -22,12 +22,12 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-secondary-50">
-      <header className="bg-white border-b border-secondary-200 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white">
+      <header className="bg-white border-b border-secondary-200 shadow-md">
         <Container>
-          <div className="py-6">
-            <h1 className="text-3xl font-bold">My Portfolios</h1>
-            <p className="mt-2 text-secondary-600">
+          <div className="py-8">
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">My Portfolios</h1>
+            <p className="mt-3 text-secondary-600 text-lg">
               Manage and create your portfolio projects
             </p>
           </div>
@@ -76,7 +76,7 @@ function Dashboard() {
               </div>
             ) : (
               portfolios.map((portfolio) => (
-                <Card key={portfolio.id} className="hover-shadow">
+                <Card key={portfolio.id} className="hover-shadow transform hover:-translate-y-1 transition-all duration-300 border-2 border-transparent hover:border-primary-200">
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-bold">{portfolio.name}</h3>

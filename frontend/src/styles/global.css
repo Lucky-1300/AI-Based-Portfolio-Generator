@@ -45,6 +45,36 @@
   }
 }
 
+/* Custom animations */
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hover-shadow {
+    @apply transition-shadow duration-300;
+  }
+
+  .hover-shadow:hover {
+    @apply shadow-xl;
+  }
+}
+
 /* Custom component styles */
 @layer components {
   .btn-primary {

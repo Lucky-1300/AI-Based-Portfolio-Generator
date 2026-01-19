@@ -36,11 +36,11 @@ function Builder() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary-50">
-      <header className="bg-white border-b border-secondary-200 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white">
+      <header className="bg-white border-b border-secondary-200 shadow-md">
         <Container>
-          <div className="py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Portfolio Builder</h1>
+          <div className="py-6 flex items-center justify-between">
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">Portfolio Builder</h1>
             <div className="flex gap-4">
               <Button
                 variant="outline"

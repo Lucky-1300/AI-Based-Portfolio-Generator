@@ -23,68 +23,71 @@ function Home() {
       <main>
         <Container>
           <Section>
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-bold mb-6">
+            <div className="text-center mb-20 animate-fadeIn">
+              <h2 className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                 Build Your Portfolio in Minutes
               </h2>
-              <p className="text-xl text-secondary-600 max-w-2xl mx-auto mb-8">
+              <p className="text-xl text-secondary-600 max-w-3xl mx-auto mb-10 leading-relaxed">
                 Leverage the power of AI to create a professional portfolio that stands out.
                 No design skills required.
               </p>
-              <div className="flex gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/builder">
-                  <Button variant="primary" size="large">
+                  <Button variant="primary" size="large" className="shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
                     Get Started Free
                   </Button>
                 </Link>
                 <Link to="/dashboard">
-                  <Button variant="outline" size="large">
+                  <Button variant="outline" size="large" className="hover:shadow-md transform hover:-translate-y-1">
                     View Examples
                   </Button>
                 </Link>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-              <Card className="hover-shadow">
-                <div className="p-6">
-                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+              <Card className="hover-shadow border-2 border-transparent hover:border-primary-200 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="p-8">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center mb-5 shadow-md">
+                    <svg className="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">AI-Powered Content</h3>
-                  <p className="text-secondary-600">
+                  <h3 className="text-2xl font-bold mb-4 text-secondary-900">AI-Powered Content</h3>
+                  <p className="text-secondary-600 leading-relaxed">
                     Let AI enhance your portfolio with intelligent suggestions, content optimization,
                     and professional writing assistance.
                   </p>
                 </div>
               </Card>
 
-              <Card className="hover-shadow">
-                <div className="p-6">
-                  <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <Card className="hover-shadow border-2 border-transparent hover:border-accent-200 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="p-8">
+                  <div className="w-14 h-14 bg-gradient-to-br from-accent-100 to-accent-200 rounded-xl flex items-center justify-center mb-5 shadow-md">
+                    <svg className="w-7 h-7 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Fully Customizable</h3>
-                  <p className="text-secondary-600">
+                  <h3 className="text-2xl font-bold mb-4 text-secondary-900">Fully Customizable</h3>
+                  <p className="text-secondary-600 leading-relaxed">
                     Choose from multiple themes, layouts, and color schemes to match your
                     personal brand and style.
                   </p>
                 </div>
               </Card>
 
-              <Card className="hover-shadow">
-                <div className="p-6">
-                  <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <Card className="hover-shadow border-2 border-transparent hover:border-secondary-300 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="p-8">
+                  <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mb-5 shadow-md">
+                    <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Easy Export</h3>
-                  <p className="text-secondary-600">
+                  <h3 className="text-2xl font-bold mb-4 text-secondary-900">Easy Export</h3>
+                  <p className="text-secondary-600 leading-relaxed">
                     Export your portfolio as HTML, PDF, or React component in one click.
                     Deploy anywhere instantly.
                   </p>
@@ -92,11 +95,11 @@ function Home() {
               </Card>
             </div>
 
-            <div className="bg-primary-600 rounded-2xl p-12 text-center text-white">
-              <h2 className="text-3xl font-bold mb-4">
+            <div className="bg-gradient-to-r from-primary-600 via-primary-700 to-accent-600 rounded-3xl p-16 text-center text-white shadow-2xl">
+              <h2 className="text-4xl font-extrabold mb-6">
                 Ready to Create Your Portfolio?
               </h2>
-              <p className="text-primary-100 mb-8 text-lg">
+              <p className="text-primary-50 mb-10 text-xl max-w-2xl mx-auto">
                 Join thousands of professionals who have already created their portfolios with AI.
               </p>
               <Link to="/builder">
