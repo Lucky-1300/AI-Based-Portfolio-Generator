@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container from '../components/common/Container';
 import PersonalInfoForm from '../components/form/PersonalInfoForm';
 import SkillsForm from '../components/form/SkillsForm';
@@ -6,22 +6,47 @@ import ExperienceForm from '../components/form/ExperienceForm';
 import ProjectsForm from '../components/form/ProjectsForm';
 import LivePreview from '../components/preview/LivePreview';
 import ThemeSwitcher from '../components/preview/ThemeSwitcher';
+import ExportPortfolio from '../components/ExportPortfolio';
 import Button from '../components/common/Button';
+import Badge from '../components/common/Badge';
+import Alert from '../components/common/Alert';
 import { usePortfolio } from '../context/PortfolioContext';
+import { validatePortfolioForExport, calculateCompletionPercentage } from '../services/exportIntegrationService';
 
 function Builder() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
-  const { portfolioData } = usePortfolio();
+  const { portfolioData, savePortfolio, loadPortfolio } = usePortfolio();
+  const [autoSaveStatus, setAutoSaveStatus] = useState('saved');
+  const [completionPercentage, setCompletionPercentage] = useState(0);
 
   const steps = [
-    { id: 0, name: 'Personal Info', component: PersonalInfoForm },
-    { id: 1, name: 'Skills', component: SkillsForm },
-    { id: 2, name: 'Experience', component: ExperienceForm },
-    { id: 3, name: 'Projects', component: ProjectsForm },
+    { id: 0, name: 'Personal Info', component: PersonalInfoForm, icon: '👤' },
+    { id: 1, name: 'Skills', component: SkillsForm, icon: '⚡' },
+    { id: 2, name: 'Experience', component: ExperienceForm, icon: '💼' },
+    { id: 3, name: 'Projects', component: ProjectsForm, icon: '🚀' },
   ];
 
   const CurrentFormComponent = steps[currentStep].component;
+
+  // Auto-save functionality
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (portfolioData) {
+        localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+        setAutoSaveStatus('saved');
+      }
+    }, 1000);
+
+    setAutoSaveStatus('saving');
+    return () => clearTimeout(timer);
+  }, [portfolioData]);
+
+  // Update completion percentage
+  useEffect(() => {
+    const percentage = calculateCompletionPercentage(portfolioData);
+    setCompletionPercentage(percentage);
+  }, [portfolioData]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -39,16 +64,39 @@ function Builder() {
     <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white">
       <header className="bg-white border-b border-secondary-200 shadow-md">
         <Container>
-          <div className="py-6 flex items-center justify-between">
-            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">Portfolio Builder</h1>
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                onClick={() => setShowPreview(!showPreview)}
-              >
-                {showPreview ? 'Hide Preview' : 'Show Preview'}
-              </Button>
-              <ThemeSwitcher />
+          <div className="py-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h1 className="text-3xl font-extrabold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                  Portfolio Builder
+                </h1>
+                <div className="flex items-center gap-3 mt-2">
+                  <Badge variant="success">
+                    {completionPercentage}% Complete
+                  </Badge>
+                  <span className="text-xs text-secondary-500">
+                    {autoSaveStatus === 'saving' ? '💾 Saving...' : '✓ Auto-saved'}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPreview(!showPreview)}
+                >
+                  {showPreview ? '📝 Hide Preview' : '👁️ Show Preview'}
+                </Button>
+                <ThemeSwitcher />
+                <ExportPortfolio />
+              </div>
+            </div>
+
+            {/* Completion Progress Bar */}
+            <div className="bg-secondary-100 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-primary-600 to-accent-600 h-full transition-all duration-500"
+                style={{ width: `${completionPercentage}%` }}
+              />
             </div>
           </div>
         </Container>
@@ -59,6 +107,19 @@ function Builder() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Form Section */}
             <div className={showPreview ? 'lg:col-span-6' : 'lg:col-span-8 lg:col-start-3'}>
+              {/* AI Suggestions Banner */}
+              {completionPercentage < 50 && (
+                <Alert variant="info" className="mb-6">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xl">💡</span>
+                    <div>
+                      <p className="font-semibold">AI Tip</p>
+                      <p className="text-sm">Add more details to your profile. Portfolios with 80%+ completion get noticed more!</p>
+                    </div>
+                  </div>
+                </Alert>
+              )}
+
               <div className="bg-white rounded-lg shadow-sm p-6">
                 {/* Progress Steps */}
                 <div className="mb-8">
@@ -66,24 +127,25 @@ function Builder() {
                     {steps.map((step, index) => (
                       <div
                         key={step.id}
-                        className="flex items-center"
+                        className="flex items-center cursor-pointer"
+                        onClick={() => setCurrentStep(index)}
                       >
                         <div
                           className={`
-                            w-10 h-10 rounded-full flex items-center justify-center font-semibold
+                            w-12 h-12 rounded-full flex items-center justify-center font-semibold transition-all
                             ${
                               index === currentStep
-                                ? 'bg-primary-600 text-white'
+                                ? 'bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-lg scale-110'
                                 : index < currentStep
                                 ? 'bg-primary-200 text-primary-800'
                                 : 'bg-secondary-200 text-secondary-600'
                             }
                           `}
                         >
-                          {index + 1}
+                          <span className="text-lg">{step.icon}</span>
                         </div>
                         <div
-                          className={`ml-2 text-sm font-medium ${
+                          className={`ml-2 text-sm font-medium hidden md:block ${
                             index === currentStep
                               ? 'text-primary-600'
                               : 'text-secondary-600'
@@ -93,9 +155,9 @@ function Builder() {
                         </div>
                         {index < steps.length - 1 && (
                           <div
-                            className={`w-12 h-1 mx-4 ${
+                            className={`w-12 h-1 mx-4 rounded transition-all ${
                               index < currentStep
-                                ? 'bg-primary-600'
+                                ? 'bg-gradient-to-r from-primary-600 to-accent-600'
                                 : 'bg-secondary-200'
                             }`}
                           />
@@ -103,6 +165,19 @@ function Builder() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Current Step Title */}
+                <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-accent-50 rounded-lg border border-primary-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{steps[currentStep].icon}</span>
+                    <h2 className="text-xl font-bold text-primary-700">
+                      {steps[currentStep].name}
+                    </h2>
+                  </div>
+                  <p className="text-sm text-primary-600 mt-1">
+                    Step {currentStep + 1} of {steps.length}
+                  </p>
                 </div>
 
                 {/* Form Component */}
@@ -115,14 +190,14 @@ function Builder() {
                     onClick={handlePrevious}
                     disabled={currentStep === 0}
                   >
-                    Previous
+                    ← Previous
                   </Button>
                   <Button
                     variant="primary"
                     onClick={handleNext}
                     disabled={currentStep === steps.length - 1}
                   >
-                    Next
+                    Next →
                   </Button>
                 </div>
               </div>
@@ -132,6 +207,12 @@ function Builder() {
             {showPreview && (
               <div className="lg:col-span-6">
                 <div className="sticky top-8">
+                  <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+                    <h3 className="font-semibold text-lg mb-2">Live Preview</h3>
+                    <p className="text-sm text-secondary-600">
+                      See how your portfolio will look in real-time
+                    </p>
+                  </div>
                   <LivePreview data={portfolioData} />
                 </div>
               </div>

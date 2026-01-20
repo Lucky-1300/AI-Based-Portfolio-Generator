@@ -4,9 +4,10 @@ class AIEngine {
   constructor() {
     this.apiKey = process.env.OPENAI_API_KEY;
     this.apiUrl = 'https://api.openai.com/v1/chat/completions';
+    this.model = 'gpt-3.5-turbo';
   }
 
-  async enhanceContent(type, content) {
+  async enhanceContent(type, content, context = {}) {
     try {
       // If no API key, return enhanced mock content
       if (!this.apiKey) {
@@ -14,19 +15,27 @@ class AIEngine {
       }
 
       const prompts = {
-        bio: `Enhance this professional bio to be more compelling and professional while maintaining the core message. Keep it concise and impactful:\n\n${content}`,
-        description: `Improve this project/experience description to be more clear, professional, and highlight achievements:\n\n${content}`,
-        summary: `Create a compelling professional summary based on this information:\n\n${content}`,
+        bio: `Enhance this professional bio to be more compelling and professional while maintaining the core message. Keep it concise (2-3 sentences), impactful, and action-oriented:\n\n${content}`,
+        
+        description: `Improve this project/experience description. Make it more clear, professional, and highlight achievements with metrics where possible:\n\n${content}`,
+        
+        summary: `Create a compelling professional summary based on this information. Focus on value proposition, key skills, and career goals (3-4 sentences):\n\n${content}`,
+        
+        responsibilities: `Convert these responsibilities into achievement-focused bullet points. Start with strong action verbs, include metrics, and show impact:\n\n${content}`,
+        
+        projectDescription: `Enhance this project description. Emphasize the problem solved, technologies used, and results achieved:\n\n${content}`,
+        
+        skills: `Given this skill: "${content}", suggest 3-5 related skills that would complement it in a portfolio.`,
       };
 
       const response = await axios.post(
         this.apiUrl,
         {
-          model: 'gpt-3.5-turbo',
+          model: this.model,
           messages: [
             {
               role: 'system',
-              content: 'You are a professional career coach helping to improve portfolio content.',
+              content: 'You are a professional career coach and technical writer helping developers create outstanding portfolios. Focus on clarity, impact, and measurable achievements.',
             },
             {
               role: 'user',
@@ -52,11 +61,22 @@ class AIEngine {
   }
 
   mockEnhance(type, content) {
-    // Return a slightly enhanced version as fallback
+    // Enhanced rule-based fallback
+    const actionVerbs = ['Developed', 'Implemented', 'Designed', 'Led', 'Optimized', 'Created', 'Architected'];
+    
     const enhancements = {
-      bio: `${content}\n\nPassionate about leveraging technology to solve real-world problems and deliver exceptional user experiences.`,
-      description: `${content}\n\nThis involved collaborative problem-solving, agile methodologies, and a focus on delivering high-quality, scalable solutions.`,
+      bio: `${content} Passionate about leveraging modern technologies to solve complex problems and deliver exceptional user experiences.`,
+      
+      description: `${content} Demonstrated strong problem-solving abilities and collaborative approach to deliver high-quality, scalable solutions.`,
+      
+      summary: `${content} Committed to continuous learning and staying current with industry best practices while contributing to impactful projects.`,
+      
+      responsibilities: content.split('\n').map(item => {
+        const verb = actionVerbs[Math.floor(Math.random() * actionVerbs.length)];
+        return item.trim().startsWith('-') ? item : `${verb} ${item}`;
+      }).join('\n'),
     };
+    
     return enhancements[type] || content;
   }
 
@@ -64,41 +84,113 @@ class AIEngine {
     try {
       const suggestions = [];
 
-      // Basic rule-based suggestions
-      if (!portfolioData.personalInfo?.bio) {
+      // Personal Info validation
+      if (!portfolioData.personalInfo?.bio || portfolioData.personalInfo.bio.length < 50) {
         suggestions.push({
           type: 'warning',
-          message: 'Add a professional bio to make your portfolio more personal',
+          section: 'Personal Info',
+          message: 'Add a compelling professional bio (minimum 50 characters)',
+          priority: 'high',
         });
       }
 
-      if (!portfolioData.skills || portfolioData.skills.length < 3) {
+      if (!portfolioData.personalInfo?.title) {
+        suggestions.push({
+          type: 'error',
+          section: 'Personal Info',
+          message: 'Professional title is required',
+          priority: 'critical',
+        });
+      }
+
+      // Skills validation
+      if (!portfolioData.skills || portfolioData.skills.length < 5) {
         suggestions.push({
           type: 'info',
-          message: 'Add more skills to showcase your expertise',
+          section: 'Skills',
+          message: 'Add at least 5 skills to showcase your expertise',
+          priority: 'medium',
         });
       }
 
+      // Projects validation
       if (!portfolioData.projects || portfolioData.projects.length === 0) {
         suggestions.push({
           type: 'warning',
-          message: 'Add projects to demonstrate your work',
+          section: 'Projects',
+          message: 'Add projects to demonstrate your practical experience',
+          priority: 'high',
+        });
+      } else if (portfolioData.projects.length < 3) {
+        suggestions.push({
+          type: 'info',
+          section: 'Projects',
+          message: 'Consider adding more projects (recommended: 3-5)',
+          priority: 'low',
         });
       }
 
+      // Experience validation
       if (!portfolioData.experiences || portfolioData.experiences.length === 0) {
         suggestions.push({
           type: 'info',
+          section: 'Experience',
           message: 'Add work experience to build credibility',
+          priority: 'medium',
         });
       }
 
-      return suggestions.length > 0
-        ? suggestions
-        : [{ type: 'success', message: 'Your portfolio looks great!' }];
+      // Links validation
+      const socialLinks = portfolioData.personalInfo?.linkedin || portfolioData.personalInfo?.github;
+      if (!socialLinks) {
+        suggestions.push({
+          type: 'info',
+          section: 'Personal Info',
+          message: 'Add LinkedIn or GitHub profile for better connectivity',
+          priority: 'low',
+        });
+      }
+
+      // Achievement suggestions
+      if (portfolioData.experiences?.some(exp => !exp.achievements || exp.achievements.length === 0)) {
+        suggestions.push({
+          type: 'tip',
+          section: 'Experience',
+          message: 'Add quantifiable achievements to your work experience (e.g., "Increased performance by 40%")',
+          priority: 'medium',
+        });
+      }
+
+      // Success message if everything is good
+      if (suggestions.length === 0) {
+        suggestions.push({
+          type: 'success',
+          section: 'Overall',
+          message: 'Your portfolio looks comprehensive! Consider exporting and sharing.',
+          priority: 'low',
+        });
+      }
+
+      return suggestions.sort((a, b) => {
+        const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      });
     } catch (error) {
       console.error('Suggestions error:', error.message);
       return [];
+    }
+  }
+
+  async enhanceBatch(items, type) {
+    // Batch enhancement for multiple items
+    try {
+      const enhanced = await Promise.all(
+        items.map(item => this.enhanceContent(type, item))
+      );
+      return enhanced;
+    } catch (error) {
+      console.error('Batch enhancement error:', error.message);
+      return items;
     }
   }
 }
