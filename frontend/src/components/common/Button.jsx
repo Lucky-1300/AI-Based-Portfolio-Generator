@@ -6,12 +6,12 @@ export default function Button({
   className = '',
   ...props
 }) {
-  const baseClasses = 'font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center transform hover:scale-105 shadow-md hover:shadow-xl'
+  const baseClasses = 'font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center shadow-md hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2'
 
   const variantClasses = {
     primary: 'bg-gradient-to-r from-primary-300 to-primary-400 text-white hover:from-primary-400 hover:to-primary-500 active:from-primary-500 active:to-primary-600 shadow-lg hover:shadow-2xl hover:-translate-y-0.5',
-    secondary: 'bg-gradient-to-r from-secondary-100 to-secondary-50 text-secondary-900 hover:from-secondary-200 hover:to-secondary-100 border-2 border-secondary-300 hover:border-secondary-400 shadow-md hover:shadow-lg',
-    outline: 'border-2 border-primary-400 text-primary-600 hover:bg-primary-50 active:bg-primary-100 hover:border-primary-500 hover:shadow-lg',
+    secondary: 'bg-gradient-to-r from-secondary-100 to-secondary-50 text-secondary-900 hover:from-secondary-200 hover:to-secondary-100 border-2 border-secondary-300 hover:border-secondary-400 shadow-md hover:shadow-lg dark:from-slate-800 dark:to-slate-800 dark:text-slate-100 dark:border-slate-700',
+    outline: 'border-2 border-primary-400 text-primary-600 hover:bg-primary-50 active:bg-primary-100 hover:border-primary-500 hover:shadow-lg dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800',
     danger: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 active:from-red-700 active:to-red-800 shadow-lg hover:shadow-2xl hover:-translate-y-0.5',
     success: 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 active:from-green-700 active:to-green-800 shadow-lg hover:shadow-2xl hover:-translate-y-0.5',
     ghost: 'text-primary-600 hover:bg-primary-100 active:bg-primary-200 hover:shadow-none',
@@ -26,6 +26,7 @@ export default function Button({
 
   return (
     <button
+      type={props.type || 'button'}
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       disabled={disabled}
       {...props}

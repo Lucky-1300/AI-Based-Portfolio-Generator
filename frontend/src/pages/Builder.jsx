@@ -8,6 +8,7 @@ import LivePreview from '../components/preview/LivePreview';
 import ThemeSwitcher from '../components/preview/ThemeSwitcher';
 import ExportPortfolio from '../components/ExportPortfolio';
 import Button from '../components/common/Button';
+import ThemeToggle from '../components/common/ThemeToggle';
 import Badge from '../components/common/Badge';
 import Alert from '../components/common/Alert';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -61,8 +62,8 @@ function Builder() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white">
-      <header className="bg-white border-b border-secondary-200 shadow-md">
+    <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white dark:from-slate-900 dark:to-slate-900">
+      <header className="bg-white dark:bg-slate-900 border-b border-secondary-200 dark:border-slate-800 shadow-md">
         <Container>
           <div className="py-6">
             <div className="flex items-center justify-between mb-4">
@@ -74,7 +75,7 @@ function Builder() {
                   <Badge variant="success">
                     {completionPercentage}% Complete
                   </Badge>
-                  <span className="text-xs text-secondary-500">
+                  <span className="text-xs text-secondary-500 dark:text-secondary-300">
                     {autoSaveStatus === 'saving' ? '💾 Saving...' : '✓ Auto-saved'}
                   </span>
                 </div>
@@ -86,13 +87,14 @@ function Builder() {
                 >
                   {showPreview ? '📝 Hide Preview' : '👁️ Show Preview'}
                 </Button>
+                <ThemeToggle />
                 <ThemeSwitcher />
                 <ExportPortfolio />
               </div>
             </div>
 
             {/* Completion Progress Bar */}
-            <div className="bg-secondary-100 rounded-full h-2 overflow-hidden">
+            <div className="bg-secondary-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
               <div
                 className="bg-gradient-to-r from-primary-600 to-accent-600 h-full transition-all duration-500"
                 style={{ width: `${completionPercentage}%` }}
@@ -120,7 +122,7 @@ function Builder() {
                 </Alert>
               )}
 
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm p-6">
                 {/* Progress Steps */}
                 <div className="mb-8">
                   <div className="flex justify-between items-center">
@@ -168,14 +170,14 @@ function Builder() {
                 </div>
 
                 {/* Current Step Title */}
-                <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-accent-50 rounded-lg border border-primary-100">
+                <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-accent-50 rounded-lg border border-primary-100 dark:bg-slate-800 dark:border-slate-700">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{steps[currentStep].icon}</span>
                     <h2 className="text-xl font-bold text-primary-700">
                       {steps[currentStep].name}
                     </h2>
                   </div>
-                  <p className="text-sm text-primary-600 mt-1">
+                  <p className="text-sm text-primary-600 dark:text-blue-300 mt-1">
                     Step {currentStep + 1} of {steps.length}
                   </p>
                 </div>
@@ -207,9 +209,9 @@ function Builder() {
             {showPreview && (
               <div className="lg:col-span-6">
                 <div className="sticky top-8">
-                  <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+                  <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm p-4 mb-4">
                     <h3 className="font-semibold text-lg mb-2">Live Preview</h3>
-                    <p className="text-sm text-secondary-600">
+                    <p className="text-sm text-secondary-600 dark:text-secondary-300">
                       See how your portfolio will look in real-time
                     </p>
                   </div>

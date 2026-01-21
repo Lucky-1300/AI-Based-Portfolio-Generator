@@ -13,8 +13,8 @@ export default function Card({
 
   return (
     <div
-      className={`bg-white border border-secondary-200 rounded-lg shadow-sm ${
-        hoverable ? 'hover:shadow-md transition-shadow duration-200' : ''
+      className={`bg-white border border-secondary-200 rounded-xl shadow-sm focus-within:ring-1 focus-within:ring-primary-200 dark:bg-slate-900 dark:border-slate-800 ${
+        hoverable ? 'hover:shadow-md hover:-translate-y-0.5 transition-all duration-200' : ''
       } ${sizeClasses[size]} ${className}`}
       {...props}
     >

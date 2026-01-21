@@ -4,9 +4,11 @@ import Container from '../components/common/Container';
 import Section from '../components/common/Section';
 import Card from '../components/common/Card';
 
+import ThemeToggle from '../components/common/ThemeToggle';
+
 function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
@@ -14,15 +16,20 @@ function Home() {
       </div>
 
       <div className="relative z-10">
-        <header className="border-b border-blue-100 bg-white/40 backdrop-blur-md shadow-sm sticky top-0">
+        <header className="border-b border-blue-100 dark:border-slate-800 bg-white/40 dark:bg-slate-900/60 backdrop-blur-md shadow-sm sticky top-0">
           <Container>
             <div className="py-6">
-              <h1 className="text-5xl font-bold gradient-text-primary">
-                ✨ AI Portfolio Generator
-              </h1>
-              <p className="mt-2 text-lg text-blue-600 font-medium">
-                Create stunning portfolios instantly
-              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-5xl font-bold gradient-text-primary">
+                    ✨ AI Portfolio Generator
+                  </h1>
+                  <p className="mt-2 text-lg text-blue-600 dark:text-blue-300 font-medium">
+                    Create stunning portfolios instantly
+                  </p>
+                </div>
+                <ThemeToggle />
+              </div>
             </div>
           </Container>
         </header>
@@ -34,7 +41,7 @@ function Home() {
                 <h2 className="text-7xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
                   Build Your Portfolio in Minutes
                 </h2>
-                <p className="text-2xl text-blue-700 max-w-4xl mx-auto mb-12 leading-relaxed font-medium">
+                <p className="text-2xl text-blue-700 dark:text-blue-300 max-w-4xl mx-auto mb-12 leading-relaxed font-medium">
                   Leverage the power of AI to create a professional portfolio that stands out.
                   No design skills required.
                 </p>
@@ -56,7 +63,7 @@ function Home() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 backdrop-blur">
+                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
                   <div className="p-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-200 to-blue-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,13 +71,13 @@ function Home() {
                       </svg>
                     </div>
                     <h3 className="text-2xl font-bold mb-4 gradient-text-primary">AI-Powered Content</h3>
-                    <p className="text-blue-700 leading-relaxed text-lg">
+                    <p className="text-blue-700 dark:text-blue-300 leading-relaxed text-lg">
                       Let AI enhance your portfolio with intelligent suggestions, content optimization, and professional writing assistance.
                     </p>
                   </div>
                 </Card>
 
-                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 backdrop-blur">
+                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
                   <div className="p-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-cyan-200 to-cyan-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <svg className="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,13 +85,13 @@ function Home() {
                       </svg>
                     </div>
                     <h3 className="text-2xl font-bold mb-4 gradient-text-primary">Fully Customizable</h3>
-                    <p className="text-blue-700 leading-relaxed text-lg">
+                    <p className="text-blue-700 dark:text-blue-300 leading-relaxed text-lg">
                       Choose from multiple themes, layouts, and color schemes to match your personal brand and style perfectly.
                     </p>
                   </div>
                 </Card>
 
-                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 backdrop-blur">
+                <Card className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl overflow-hidden border-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
                   <div className="p-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-green-200 to-green-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +99,7 @@ function Home() {
                       </svg>
                     </div>
                     <h3 className="text-2xl font-bold mb-4 gradient-text-primary">Easy Export</h3>
-                    <p className="text-blue-700 leading-relaxed text-lg">
+                    <p className="text-blue-700 dark:text-blue-300 leading-relaxed text-lg">
                       Export your portfolio as HTML, PDF, or React component in one click. Deploy anywhere instantly.
                     </p>
                   </div>

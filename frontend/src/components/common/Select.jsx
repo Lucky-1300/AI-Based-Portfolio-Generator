@@ -6,14 +6,18 @@ export default function Select({
   className = '',
   ...props
 }) {
+  const selectId = props.id;
+  const helpId = selectId ? `${selectId}-help` : undefined;
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-semibold text-secondary-900 mb-2">
+        <label htmlFor={selectId} className="block text-sm font-semibold text-secondary-900 mb-2">
           {label}
         </label>
       )}
       <select
+        aria-invalid={!!error}
+        aria-describedby={!error && helperText ? helpId : undefined}
         className={`input-field ${error ? 'input-error' : ''} ${className}`}
         {...props}
       >
@@ -31,7 +35,7 @@ export default function Select({
         <p className="text-sm text-red-600 mt-1">{error}</p>
       )}
       {helperText && !error && (
-        <p className="text-sm text-secondary-500 mt-1">{helperText}</p>
+        <p id={helpId} className="text-sm text-secondary-500 mt-1">{helperText}</p>
       )}
     </div>
   )
